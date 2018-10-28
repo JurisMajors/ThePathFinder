@@ -3,6 +3,8 @@ import java.awt.geom.Rectangle2D;
 public class Node {
     boolean visited;
     boolean obstacle;
+    boolean start = false; // path start and end
+    boolean end = false;
     private final Rectangle2D.Double square;
     private Color my_color;
 
@@ -17,6 +19,20 @@ public class Node {
         }
         this.square = new Rectangle2D.Double(x,y,sizex,sizey);
     }
+    void setStart(){
+        if(this.end){
+            this.end = false;
+        }
+        this.start = true;
+        setColor(Color.RED);
+    }
+    void setEnd(){
+        if(this.start){
+            this.start = false;
+        }
+        this.end = true;
+        setColor(Color.BLUE);
+    }
 
     Rectangle2D getSquare(){
         return this.square;
@@ -29,10 +45,12 @@ public class Node {
     }
 
     void reverse(){
-        if(this.obstacle){
+        if(this.obstacle || this.start || this.end){
             this.obstacle = false;
+            this.start = false;
+            this.end = false;
             setColor(Color.WHITE);
-        }else if (!this.obstacle){
+        }else {
             this.obstacle = true;
             setColor(Color.BLACK);
         }
