@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
 
 public class World extends JPanel {
     Node[][] board;
@@ -13,18 +12,11 @@ public class World extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                System.out.println(" YE");
                 for (int i = 0; i < size; i++) {
                     for (int j = 0; j <size; j++) {
                         Node n = board[i][j];
                         if(n.getSquare().contains(e.getPoint())){
-                            if(n.obstacle){
-                                n.obstacle = false;
-                                n.setColor(Color.WHITE);
-                            }else {
-                                n.obstacle = true;
-                                n.setColor(Color.BLACK);
-                            }
+                            n.reverse();
                         }
                     }
                 }

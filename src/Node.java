@@ -4,7 +4,7 @@ public class Node {
     boolean visited;
     boolean obstacle;
     private final Rectangle2D.Double square;
-    Color my_color;
+    private Color my_color;
 
     public Node(int type,  double x, double y, double sizex, double sizey) {
         visited = false;
@@ -26,6 +26,16 @@ public class Node {
     }
     Color getColor(){
         return this.my_color;
+    }
+
+    void reverse(){
+        if(this.obstacle){
+            this.obstacle = false;
+            setColor(Color.WHITE);
+        }else if (!this.obstacle){
+            this.obstacle = true;
+            setColor(Color.BLACK);
+        }
     }
 
 
