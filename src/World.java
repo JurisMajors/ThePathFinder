@@ -7,15 +7,21 @@ import java.awt.event.MouseEvent;
 public class World extends JPanel {
     Node[][] board;
     int size;
+    private final int[] di = {-1,-1,-1, 0,  0, 1, 1 ,1};
+    private final int[] dj = {-1, 0, 1, -1,  1, -1, 0, 1};
     public World(int n) {
         reset(n);
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isRightMouseButton(e)){
-                    if(isStartIn()){ // if there is a start node already than the clicked one must be an end node
+                    boolean is_start = isStartIn();
+                    boolean is_end = isEndIn();
+                    if(is_start && is_end){
+                        // do nothing
+                    }else if(is_start){ // if there is a start node already than the clicked one must be an end node
                         reactOnClick(e, 0);
-                    }else if(!isEndIn()){
+                    }else if(!is_end) {
                         reactOnClick(e, 1);
                     }else{
                         reactOnClick(e, 1);
@@ -37,7 +43,7 @@ public class World extends JPanel {
             for (int j = 0; j < size; j++) {
                 Node n = board[i][j];
                 if (n.getSquare().contains(e.getPoint())) {
-                    if(!isBorder(i, j)){
+                    if(!isBorder(i, j)){ // protect borders
                         if(way == 0){
                             n.setEnd();
                         }else if( way == 1){
@@ -51,6 +57,7 @@ public class World extends JPanel {
         }
 
     }
+
     boolean isEndIn(){
         for (int i = 0; i < this.size; i++) {
             for (int j = 0; j < this.size ; j++) {
@@ -77,17 +84,27 @@ public class World extends JPanel {
     boolean isBorder(int i, int j){
         return (i == 0 || j == 0 || i == this.size-1 || j == this.size - 1);
     }
+
+    boolean outOfBounds(int x, int y, int i) {
+        if (x + di[i] >= size || y + dj[i] >= size) {
+            return true;
+        } else if (x + di[i] < 0 || y + dj[i] < 0) {
+            return true;
+        }
+        return false;
+    }
+
     void reset(int size){
         this.board = new Node[size][size];
         this.size = size;
         int type;
         double node_size_x = 790./ size;
         double node_size_y = 700. / size;
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+        for (int i = 0; i < this.size; i++) {
+            for (int j = 0; j < this.size; j++) {
                 double x = i*node_size_x;
                 double y = j*node_size_y;
-                if(isBorder(i, j)){
+                if(isBorder(i, j)){ // build the wall
                     type = 1;
                 }else{
                     type = 0;
@@ -95,8 +112,20 @@ public class World extends JPanel {
                 this.board[i][j] = new Node(type,x,y,node_size_x, node_size_y);
             }
         }
+        addNeighbours();
     }
 
+    void addNeighbours(){
+        for (int i = 0; i < this.size; i++) {
+            for (int j = 0; j < this.size ; j++) {
+                for (int k = 0; k < di.length; k++) {
+                    if(!outOfBounds(i, j, k)){
+                        board[i][j].adj.add(board[i + di[k]][j + dj[k]]);
+                    }
+                }
+            }
+        }
+    }
 
     @Override
     protected void paintComponent(Graphics g) {

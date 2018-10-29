@@ -1,23 +1,27 @@
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+
 public class Node {
     boolean visited;
     boolean obstacle;
     boolean start = false; // path start and end
     boolean end = false;
+    public ArrayList<Node> adj;
     private final Rectangle2D.Double square;
     private Color my_color;
 
     public Node(int type,  double x, double y, double sizex, double sizey) {
-        visited = false;
+        this.visited = false;
         if(type == 0){
-            obstacle = false;
-            my_color = Color.WHITE;
+            this.obstacle = false;
+            this.my_color = Color.WHITE;
         }else if (type == 1){
-            obstacle = true;
-            my_color = Color.BLACK;
+            this.obstacle = true;
+            this.my_color = Color.BLACK;
         }
         this.square = new Rectangle2D.Double(x,y,sizex,sizey);
+        this.adj = new ArrayList<>();
     }
     void setStart(){
         if(this.end){
