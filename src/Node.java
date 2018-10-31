@@ -10,8 +10,11 @@ public class Node {
     public ArrayList<Node> adj;
     private final Rectangle2D.Double square;
     private Color my_color;
+    private double h;
+    private int g = -1;
+    private int worldx, worldy;
 
-    public Node(int type,  double x, double y, double sizex, double sizey) {
+    public Node(int type,int i,int j, double x, double y, double sizex, double sizey) {
         this.visited = false;
         if(type == 0){
             this.obstacle = false;
@@ -22,6 +25,8 @@ public class Node {
         }
         this.square = new Rectangle2D.Double(x,y,sizex,sizey);
         this.adj = new ArrayList<>();
+        this.worldx = i;
+        this.worldy = j;
     }
     void setStart(){
         if(this.end){
@@ -45,6 +50,9 @@ public class Node {
         this.my_color = c;
     }
     Color getColor(){
+        if(this.visited){
+            return Color.GREEN;
+        }
         return this.my_color;
     }
 
@@ -59,6 +67,44 @@ public class Node {
             setColor(Color.BLACK);
         }
     }
+
+    void setHeuristic(double h){
+        this.h = h;
+    }
+
+    double getHeuristic(){
+        return this.h;
+    }
+    int findMinimumCost(){
+        int min = 0;
+        for(Node n : adj){
+            if(n.g != -1){
+                min = Math.min(min, n.g);
+            }
+        }
+        return min;
+    }
+
+
+    void setCostToStart(){
+        if(this.start){
+            this.g = 0;
+        }else{
+            this.g = findMinimumCost() + 1;
+        }
+    }
+    int getCost(){
+        return this.g;
+    }
+
+
+    int getX(){
+        return this.worldx;
+    }
+    int getY(){
+        return this.worldy;
+    }
+
 
 
 }

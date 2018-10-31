@@ -7,9 +7,9 @@ import java.awt.event.MouseEvent;
 public class World extends JPanel {
     Node[][] board;
     int size;
-    private final int[] di = {-1,-1,-1, 0,  0, 1, 1 ,1};
-    private final int[] dj = {-1, 0, 1, -1,  1, -1, 0, 1};
-    public World(int n) {
+    private final int[] di = {-1, -1, -1, 0, 0, 1, 1 , 1};
+    private final int[] dj = {-1, 0, 1, -1, 1, -1, 0, 1};
+    World(int n) {
         reset(n);
         addMouseListener(new MouseAdapter() {
             @Override
@@ -109,10 +109,14 @@ public class World extends JPanel {
                 }else{
                     type = 0;
                 }
-                this.board[i][j] = new Node(type,x,y,node_size_x, node_size_y);
+                this.board[i][j] = new Node(type, i, j, x, y, node_size_x, node_size_y);
             }
         }
         addNeighbours();
+    }
+
+    Node getNode(int row, int col){
+        return this.board[row][col];
     }
 
     void addNeighbours(){

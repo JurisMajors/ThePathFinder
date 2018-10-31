@@ -17,7 +17,8 @@ public class main implements ActionListener,ChangeListener  {
     private JButton runner;
     private JComboBox pathfinders;
     private JTextField size;
-    private String[] algorithms = {"DFS", "BFS", "A*"};
+    private String[] algorithms = { "A*", "Djikstra"};
+    private PathFinder pathfinder;
 
 
     main(){
@@ -55,6 +56,7 @@ public class main implements ActionListener,ChangeListener  {
         control_panel.add(runner);
         // add panel to frame
         world = new World(size_slider.getValue());
+        pathfinder = new PathFinder(world, (String)pathfinders.getSelectedItem());
         frame.add(control_panel, BorderLayout.SOUTH);
         frame.add(world);
         world.repaint();
@@ -68,19 +70,19 @@ public class main implements ActionListener,ChangeListener  {
             JComboBox cb = (JComboBox)e.getSource();
             String selected = (String)cb.getSelectedItem();
             switch(selected){
-                case "DFS":
+                case "A*":
+                    pathfinder.setAlgorithm(algorithms[0]);
                     System.out.println(algorithms[0]);
                     break;
-                case "BFS":
+                case "Djikstra":
+                    pathfinder.setAlgorithm(algorithms[1]);
                     System.out.println(algorithms[1]);
-                    break;
-                case "A*":
-                    System.out.println(algorithms[2]);
                     break;
 
             }
         }else if(e.getSource() == runner){
             System.out.println("RUNNING");
+            pathfinder.run();
         }
 
 
