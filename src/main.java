@@ -13,6 +13,7 @@ public class main implements ActionListener,ChangeListener  {
     private JFrame frame;
     private JPanel control_panel;
     private JSlider size_slider;
+    private JButton reset;
     private World world;
     private JButton runner;
     private JComboBox pathfinders;
@@ -45,7 +46,9 @@ public class main implements ActionListener,ChangeListener  {
         pathfinders = new JComboBox(algorithms);
         pathfinders.addActionListener(this);
         runner = new JButton("RUN");
+        reset = new JButton("RESET");
         runner.addActionListener(this);
+        reset.addActionListener(this);
 
         // add everything to panel
         control_panel.setLayout(new FlowLayout());
@@ -53,6 +56,7 @@ public class main implements ActionListener,ChangeListener  {
         control_panel.add(size);
         control_panel.add(size_slider, BorderLayout.SOUTH);
         control_panel.add(pathfinders);
+        control_panel.add(reset);
         control_panel.add(runner);
         // add panel to frame
         world = new World(size_slider.getValue());
@@ -83,6 +87,9 @@ public class main implements ActionListener,ChangeListener  {
         }else if(e.getSource() == runner){
             System.out.println("RUNNING");
             pathfinder.run();
+        }else if(e.getSource() == reset){
+            this.world.reset(size_slider.getValue());
+            this.world.repaint();
         }
 
 

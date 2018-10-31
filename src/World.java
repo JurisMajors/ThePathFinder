@@ -131,6 +131,25 @@ public class World extends JPanel {
         }
     }
 
+    Node[] getStartAndEnd(){
+        int k = 0;
+        Node[] tmp = new Node[2];
+        for (int i = 0; i < this.size ; i++) {
+            for (int j = 0; j < this.size; j++) {
+                // assign start and end
+                if(getNode(i, j).start){
+                    tmp[0] = getNode(i, j);
+                    k++;
+                } else if (getNode(i, j).end){
+                    tmp[1] = getNode(i, j);
+                    k++;
+                }
+                if(k == 2){ break;} // break when both found
+            }
+        }
+        return tmp;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

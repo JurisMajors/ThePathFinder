@@ -1,15 +1,28 @@
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.PriorityQueue;
 
 public class PathFinder {
     World G;
-    int n;
     Node start, end;
     String algorithm;
+    Comparator<Node> nodeComparator = new Comparator<Node>() {
+        @Override
+        public int compare(Node o1, Node o2) {
+            return o1.getHeuristic() + o1.getCost() - o2.getHeuristic() - o2.getCost();
+        }
+    };
+
+
 
     PathFinder(World graph, String type){
         this.G = graph;
-        this.n = G.board[0].length;
         setAlgorithm(type);
     }
+
+
+
+
 
 
     void setAlgorithm(String type){
@@ -30,35 +43,28 @@ public class PathFinder {
 
 
     void getStartAndEnd(){
-        int k = 0;
-        for (int i = 0; i < this.n ; i++) {
-            for (int j = 0; j < this.n; j++) {
-                // assign start and end
-                if(G.getNode(i, j).start){
-                    start = G.getNode(i, j);
-                    k++;
-                } else if (G.getNode(i, j).end){
-                    end = G.getNode(i, j);
-                    k++;
-                }
-                if(k == 2){ break;} // break when both found
-            }
-        }
+        Node[] tmp = G.getStartAndEnd();
+        start = tmp[0];
+        end = tmp[1];
     }
 
-    double nodeHeuristic(Node n){
+    int nodeHeuristic(Node n){
         int dx = Math.abs(n.getX() - end.getX());
         int dy = Math.abs(n.getY() - end.getY());
         int diagonal_steps = Math.min(dx, dy);
         int straight_steps = Math.max(dx, dy) - diagonal_steps;
-        return Math.sqrt(2)*diagonal_steps + straight_steps;
+        return 14*diagonal_steps + 10*straight_steps;
     }
 
     void calculateAttributes(){
-        for (int i = 0; i < this.n ; i++) {
-            for (int j = 0; j < this.n; j++) {
+        for (int i = 0; i < this.G.size ; i++) {
+            for (int j = 0; j < this.G.size; j++) {
                 Node n = G.getNode(i, j);
-                n.setHeuristic(nodeHeuristic(n));
+                if(n.obstacle){
+                    n.setHeuristic(-1);
+                }else{
+                    n.setHeuristic(nodeHeuristic(n));
+                }
                 n.setCostToStart();
             }
         }
@@ -67,11 +73,27 @@ public class PathFinder {
     void doAStar(){
         System.out.println("Doing A*");
         calculateAttributes();
+        PriorityQueue<Node> OPEN = new PriorityQueue<>(nodeComparator);
+        OPEN.add(start);
+        while(!OPEN.isEmpty()){
+            Node current = OPEN.poll();
+            current.visited = true;
+            G.repaint();
+            if(current.equals(end)){
+                return;
+            }
+            for(Node neighbour : current.adj){
+                if(neighbour.obstacle || neighbour.visited){
+                    continue;
+                }
 
+                if(!OPEN.contains(neighbour)){
+                    OPEN.add(neighbour);
+                }
+            }
 
-
+        }
     }
-
 
 
 

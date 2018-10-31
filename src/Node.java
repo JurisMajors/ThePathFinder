@@ -9,10 +9,11 @@ public class Node {
     boolean end = false;
     public ArrayList<Node> adj;
     private final Rectangle2D.Double square;
-    private Color my_color;
-    private double h;
-    private int g = -1;
+    private Color my_color; // color
+    private int h; // heuristic
+    private int g = -1; // cost to start
     private int worldx, worldy;
+    private Node parent;
 
     public Node(int type,int i,int j, double x, double y, double sizex, double sizey) {
         this.visited = false;
@@ -68,11 +69,11 @@ public class Node {
         }
     }
 
-    void setHeuristic(double h){
+    void setHeuristic(int h){
         this.h = h;
     }
 
-    double getHeuristic(){
+    int getHeuristic(){
         return this.h;
     }
     int findMinimumCost(){
@@ -85,9 +86,18 @@ public class Node {
         return min;
     }
 
+    // parent for developing the shortest path
+    void setParent(Node p){
+        this.parent = p;
+    }
+    Node getParent(){
+        return this.parent;
+    }
 
     void setCostToStart(){
-        if(this.start){
+        if(this.obstacle){
+            this.g = -1;
+        }else if(this.start){
             this.g = 0;
         }else{
             this.g = findMinimumCost() + 1;
