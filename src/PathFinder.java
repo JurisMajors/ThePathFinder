@@ -25,7 +25,6 @@ public class PathFinder {
 
     void run(){
         getStartAndEnd();
-        System.out.println("HALLO");
         if(this.algorithm.equals("A*")){
             doAStar();
         }else if(this.algorithm.equals("Djikstra")){

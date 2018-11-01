@@ -14,6 +14,7 @@ public class Node {
     private int g = -1; // cost to start
     private int worldx, worldy;
     private Node parent;
+    public Node maze_parent;
 
     public Node(int type,int i,int j, double x, double y, double sizex, double sizey) {
         this.visited = false;
@@ -29,6 +30,7 @@ public class Node {
         this.worldx = i;
         this.worldy = j;
     }
+
     void setStart(){
         if(this.end){
             this.end = false;
@@ -53,7 +55,6 @@ public class Node {
     Color getColor(){
         return this.my_color;
     }
-
     void reverse(){
         if(this.obstacle || this.start || this.end){
             this.obstacle = false;
@@ -66,15 +67,13 @@ public class Node {
         }
     }
 
-    void reset(){
+    void reset() {
         this.obstacle = false;
         this.start = false;
         this.end = false;
         this.visited = false;
         setColor(Color.WHITE);
     }
-
-
 
     void setHeuristic(int h){
         this.h = h;
@@ -83,6 +82,7 @@ public class Node {
     int getHeuristic(){
         return this.h;
     }
+
     int findMinimumCost(){
         int min = 0;
         for(Node n : adj){
@@ -92,13 +92,20 @@ public class Node {
         }
         return min;
     }
-
     // parent for developing the shortest path
     void setParent(Node p){
         this.parent = p;
     }
     Node getParent(){
         return this.parent;
+    }
+
+    void setMazeParent(Node p){
+        this.maze_parent = p;
+    }
+
+    Node getMazeParent(){
+        return this.maze_parent;
     }
 
     void setCostToStart(){
@@ -113,7 +120,6 @@ public class Node {
     int getCost(){
         return this.g;
     }
-
 
     int getX(){
         return this.worldx;

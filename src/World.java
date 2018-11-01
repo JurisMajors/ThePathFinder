@@ -9,6 +9,7 @@ public class World extends JPanel {
     int size;
     private final int[] di = {-1, -1, -1, 0, 0, 1, 1 , 1};
     private final int[] dj = {-1, 0, 1, -1, 1, -1, 0, 1};
+    private MazeGenerator generator;
     World(int n) {
         reset(n);
         addMouseListener(new MouseAdapter() {
@@ -32,6 +33,7 @@ public class World extends JPanel {
                 repaint();
             }
         });
+        generator = new MazeGenerator(this);
     }
 
     /**
@@ -161,6 +163,13 @@ public class World extends JPanel {
             }
         }
     }
+    // generates a maze
+    void generate(){
+        generator.run();
+    }
+
+
+
 
     @Override
     protected void paintComponent(Graphics g) {

@@ -1,11 +1,9 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
 
 public class main implements ActionListener,ChangeListener  {
     private static final int WIDTH = 800;
@@ -16,6 +14,7 @@ public class main implements ActionListener,ChangeListener  {
     private JButton reset;
     private JButton reset_path;
     private JButton runner;
+    private JButton generator;
     private JComboBox pathfinders;
     private JTextField size;
     private String[] algorithms = { "A*", "Djikstra"};
@@ -35,6 +34,7 @@ public class main implements ActionListener,ChangeListener  {
         reset = new JButton("RESET");
         runner = new JButton("RUN");
         reset_path = new JButton("Remove Path");
+        generator = new JButton("Generate Maze");
         world = new World(size_slider.getValue());
         pathfinders = new JComboBox(algorithms);
         pathfinder = new PathFinder(world, (String)pathfinders.getSelectedItem());
@@ -58,12 +58,14 @@ public class main implements ActionListener,ChangeListener  {
         runner.addActionListener(this);
         reset.addActionListener(this);
         reset_path.addActionListener(this);
+        generator.addActionListener(this);
 
         // add everything to panel
         control_panel.setLayout(new FlowLayout());
         control_panel.add(new JLabel("Select Size"));
         control_panel.add(size);
         control_panel.add(size_slider, BorderLayout.SOUTH);
+        control_panel.add(generator);
         control_panel.add(pathfinders);
         control_panel.add(reset);
         control_panel.add(reset_path);
@@ -94,11 +96,13 @@ public class main implements ActionListener,ChangeListener  {
             pathfinder.run();
         }else if(e.getSource() == reset){
             this.world.reset(size_slider.getValue());
-            this.world.repaint();
         }else if(e.getSource() == reset_path){
             this.world.resetPath();
-            this.world.repaint();
+        }else if(e.getSource() == generator){
+            this.world.reset(size_slider.getValue());
+            this.world.generate();
         }
+        this.world.repaint();
 
 
     }
