@@ -76,11 +76,9 @@ public class main implements ActionListener,ChangeListener  {
             switch(selected){
                 case "A*":
                     pathfinder.setAlgorithm(algorithms[0]);
-                    System.out.println(algorithms[0]);
                     break;
                 case "Djikstra":
                     pathfinder.setAlgorithm(algorithms[1]);
-                    System.out.println(algorithms[1]);
                     break;
 
             }

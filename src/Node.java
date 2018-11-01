@@ -51,9 +51,6 @@ public class Node {
         this.my_color = c;
     }
     Color getColor(){
-        if(this.visited){
-            return Color.GREEN;
-        }
         return this.my_color;
     }
 
