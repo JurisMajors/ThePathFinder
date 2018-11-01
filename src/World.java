@@ -104,8 +104,8 @@ public class World extends JPanel {
         double node_size_y = 700. / size;
         for (int i = 0; i < this.size; i++) {
             for (int j = 0; j < this.size; j++) {
-                double x = i*node_size_x;
-                double y = j*node_size_y;
+                double x = j*node_size_x;
+                double y = i*node_size_y;
                 if(isBorder(i, j)){ // build the wall
                     type = 1;
                 }else{

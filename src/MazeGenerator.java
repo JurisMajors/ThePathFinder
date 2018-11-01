@@ -21,9 +21,11 @@ public class MazeGenerator {
         int wx = x + (horizontal ? rand.nextInt(height - 2) : 0 );
         int wy = y + (horizontal ? 0 :  rand.nextInt(width - 2));
         // passage point
-        int px = wx + (horizontal ? 0 : rand.nextInt(height));
-        int py = wy + (horizontal ? rand.nextInt(width) : 0);
+        int px = wx + (horizontal ? 0 : rand.nextInt(height-1));
+        int py = wy + (horizontal ? rand.nextInt(width-1) : 0);
         // what direction
+        System.out.println("LINE: "+ wx + " " + wy);
+        System.out.println("ENTRANCE: "+ px + " " + py);
         int dx = horizontal ? 0 : 1;
         int dy = horizontal ? 1 : 0;
         //length of wall
@@ -40,8 +42,8 @@ public class MazeGenerator {
         // set new x's and y's
         int nx = x;
         int ny = y;
-        int nw = horizontal ? width : wy - y + 1;
-        int nh = horizontal ? wx - x + 1 : height;
+        int nw = horizontal ? width : wy - y ;
+        int nh = horizontal ? wx - x  : height;
         this.G.repaint();
         divide(nx, ny, nw, nh, getOrientation(nw, nh));
         nx = horizontal ? wx + 1 : x ;
@@ -51,7 +53,7 @@ public class MazeGenerator {
         divide(nx, ny, nw, nh, getOrientation(nw, nh));
     }
     void run(){
-        divide(1, 1, this.G.size - 2, this.G.size - 2, getOrientation(this.G.size, this.G.size));
+        divide(1, 1, this.G.size - 1, this.G.size - 1, getOrientation(this.G.size, this.G.size));
     }
 
 
