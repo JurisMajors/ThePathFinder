@@ -150,6 +150,18 @@ public class World extends JPanel {
         return tmp;
     }
 
+    void resetPath(){
+        for (int i = 0; i < this.size ; i++) {
+            for (int j = 0; j < this.size; j++) {
+                if(this.board[i][j].obstacle){
+                    continue;
+                }else{
+                    this.board[i][j].reset();
+                }
+            }
+        }
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

@@ -48,7 +48,7 @@ public class PathFinder {
     }
 
     void calculateAttributes(){ // calculates h-cost and g-cost for all nodes
-        //TODO: optimization by calculating only in specific area
+
         for (int i = 0; i < this.G.size ; i++) {
             for (int j = 0; j < this.G.size; j++) {
                 Node n = G.getNode(i, j);

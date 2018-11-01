@@ -14,11 +14,12 @@ public class main implements ActionListener,ChangeListener  {
     private JPanel control_panel;
     private JSlider size_slider;
     private JButton reset;
-    private World world;
+    private JButton reset_path;
     private JButton runner;
     private JComboBox pathfinders;
     private JTextField size;
     private String[] algorithms = { "A*", "Djikstra"};
+    private World world;
     private PathFinder pathfinder;
 
 
@@ -28,6 +29,16 @@ public class main implements ActionListener,ChangeListener  {
 
     void prepareGUI(){
         frame = new JFrame("The Pathfinder");
+        control_panel = new JPanel();
+        size_slider = new JSlider(JSlider.HORIZONTAL, 10, 100, 50);
+        size = new JTextField("50");
+        reset = new JButton("RESET");
+        runner = new JButton("RUN");
+        reset_path = new JButton("Remove Path");
+        world = new World(size_slider.getValue());
+        pathfinders = new JComboBox(algorithms);
+        pathfinder = new PathFinder(world, (String)pathfinders.getSelectedItem());
+
         frame.setSize(WIDTH, HEIGHT);
 //        frame.setLayout(new GridLayout(2, 1));
         frame.addWindowListener(new WindowAdapter() {
@@ -35,20 +46,18 @@ public class main implements ActionListener,ChangeListener  {
                 System.exit(0);
             }
         });
-        control_panel = new JPanel();
-        size_slider = new JSlider(JSlider.HORIZONTAL, 10, 100, 50);
+
         size_slider.setMajorTickSpacing(20);
         size_slider.setMinorTickSpacing(2);
         size_slider.setPaintTicks(true);
-        size_slider.addChangeListener(this);
-        size = new JTextField("50");
+
         size.setPreferredSize(new Dimension(50, 20));
-        pathfinders = new JComboBox(algorithms);
+
+        size_slider.addChangeListener(this);
         pathfinders.addActionListener(this);
-        runner = new JButton("RUN");
-        reset = new JButton("RESET");
         runner.addActionListener(this);
         reset.addActionListener(this);
+        reset_path.addActionListener(this);
 
         // add everything to panel
         control_panel.setLayout(new FlowLayout());
@@ -57,10 +66,9 @@ public class main implements ActionListener,ChangeListener  {
         control_panel.add(size_slider, BorderLayout.SOUTH);
         control_panel.add(pathfinders);
         control_panel.add(reset);
+        control_panel.add(reset_path);
         control_panel.add(runner);
         // add panel to frame
-        world = new World(size_slider.getValue());
-        pathfinder = new PathFinder(world, (String)pathfinders.getSelectedItem());
         frame.add(control_panel, BorderLayout.SOUTH);
         frame.add(world);
         world.repaint();
@@ -83,10 +91,12 @@ public class main implements ActionListener,ChangeListener  {
 
             }
         }else if(e.getSource() == runner){
-            System.out.println("RUNNING");
             pathfinder.run();
         }else if(e.getSource() == reset){
             this.world.reset(size_slider.getValue());
+            this.world.repaint();
+        }else if(e.getSource() == reset_path){
+            this.world.resetPath();
             this.world.repaint();
         }
 

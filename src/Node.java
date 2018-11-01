@@ -66,6 +66,16 @@ public class Node {
         }
     }
 
+    void reset(){
+        this.obstacle = false;
+        this.start = false;
+        this.end = false;
+        this.visited = false;
+        setColor(Color.WHITE);
+    }
+
+
+
     void setHeuristic(int h){
         this.h = h;
     }
