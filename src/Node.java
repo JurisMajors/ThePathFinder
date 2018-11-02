@@ -7,6 +7,7 @@ public class Node {
     boolean obstacle;
     boolean start = false; // path start and end
     boolean end = false;
+    boolean border;
     public ArrayList<Node> adj;
     private final Rectangle2D.Double square;
     private Color my_color; // color
@@ -14,21 +15,17 @@ public class Node {
     private int g = -1; // cost to start
     private int worldx, worldy;
     private Node parent;
-    public Node maze_parent;
+    boolean explored;
 
-    public Node(int type,int i,int j, double x, double y, double sizex, double sizey) {
+    public Node(int i,int j, double x, double y, double sizex, double sizey) {
         this.visited = false;
-        if(type == 0){
-            this.obstacle = false;
-            this.my_color = Color.WHITE;
-        }else if (type == 1){
-            this.obstacle = true;
-            this.my_color = Color.BLACK;
-        }
+        this.obstacle = false;
         this.square = new Rectangle2D.Double(x,y,sizex,sizey);
         this.adj = new ArrayList<>();
         this.worldx = i;
         this.worldy = j;
+        this.border = false;
+        this.explored = false;
     }
 
     void setStart(){
@@ -67,6 +64,16 @@ public class Node {
         }
     }
 
+    void makeBorder(){
+        this.border = true;
+        this.obstacle = true;
+    }
+    void explore(){
+        this.explored = true;
+        this.obstacle = false;
+        setColor(Color.WHITE);
+    }
+
     void reset() {
         this.obstacle = false;
         this.start = false;
@@ -98,14 +105,6 @@ public class Node {
     }
     Node getParent(){
         return this.parent;
-    }
-
-    void setMazeParent(Node p){
-        this.maze_parent = p;
-    }
-
-    Node getMazeParent(){
-        return this.maze_parent;
     }
 
     void setCostToStart(){

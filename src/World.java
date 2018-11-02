@@ -7,8 +7,8 @@ import java.awt.event.MouseEvent;
 public class World extends JPanel {
     Node[][] board;
     int size;
-    private final int[] di = {-1, -1, -1, 0, 0, 1, 1 , 1};
-    private final int[] dj = {-1, 0, 1, -1, 1, -1, 0, 1};
+    private final int[] di = { -1,  0, 0,  1 , };
+    private final int[] dj = { 0, -1, 1,  0, };
     private MazeGenerator generator;
     World(int n) {
         reset(n);
@@ -99,19 +99,19 @@ public class World extends JPanel {
     void reset(int size){
         this.board = new Node[size][size];
         this.size = size;
-        int type;
         double node_size_x = 790./ size;
         double node_size_y = 700. / size;
         for (int i = 0; i < this.size; i++) {
             for (int j = 0; j < this.size; j++) {
                 double x = j*node_size_x;
                 double y = i*node_size_y;
+                this.board[i][j] = new Node(i, j, x, y, node_size_x, node_size_y);
                 if(isBorder(i, j)){ // build the wall
-                    type = 1;
+                    this.board[i][j].makeBorder();
+                    this.board[i][j].setColor(Color.BLACK);
                 }else{
-                    type = 0;
+                    this.board[i][j].setColor(Color.WHITE);
                 }
-                this.board[i][j] = new Node(type, i, j, x, y, node_size_x, node_size_y);
             }
         }
         addNeighbours();
