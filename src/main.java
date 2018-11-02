@@ -8,16 +8,16 @@ import java.awt.event.*;
 public class main implements ActionListener,ChangeListener  {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
-    private JFrame frame;
-    private JPanel control_panel;
-    private JSlider size_slider;
-    private JButton reset;
-    private JButton reset_path;
-    private JButton runner;
-    private JButton generator;
-    private JComboBox pathfinders;
-    private JTextField size;
+    private JFrame frame = new JFrame("The Pathfinder");;
+    private JPanel control_panel = new JPanel();
+    private JSlider size_slider = new JSlider(JSlider.HORIZONTAL, 10, 500, 50);
+    private JButton reset= new JButton("RESET");
+    private JButton reset_path = new JButton("Remove Path");
+    private JButton runner= new JButton("RUN");
+    private JButton generator = new JButton("Generate Maze");
+    private JTextField size = new JTextField("50");
     private String[] algorithms = { "A*", "Djikstra"};
+    private JComboBox pathfinders = new JComboBox(algorithms);
     private World world;
     private PathFinder pathfinder;
 
@@ -27,20 +27,10 @@ public class main implements ActionListener,ChangeListener  {
 
 
     void prepareGUI(){
-        frame = new JFrame("The Pathfinder");
-        control_panel = new JPanel();
-        size_slider = new JSlider(JSlider.HORIZONTAL, 10, 100, 50);
-        size = new JTextField("50");
-        reset = new JButton("RESET");
-        runner = new JButton("RUN");
-        reset_path = new JButton("Remove Path");
-        generator = new JButton("Generate Maze");
         world = new World(size_slider.getValue());
-        pathfinders = new JComboBox(algorithms);
         pathfinder = new PathFinder(world, (String)pathfinders.getSelectedItem());
 
         frame.setSize(WIDTH, HEIGHT);
-//        frame.setLayout(new GridLayout(2, 1));
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent){
                 System.exit(0);
@@ -51,7 +41,7 @@ public class main implements ActionListener,ChangeListener  {
         size_slider.setMinorTickSpacing(2);
         size_slider.setPaintTicks(true);
 
-        size.setPreferredSize(new Dimension(50, 20));
+        size.setPreferredSize(new Dimension(40, 20));
 
         size_slider.addChangeListener(this);
         pathfinders.addActionListener(this);
@@ -62,7 +52,6 @@ public class main implements ActionListener,ChangeListener  {
 
         // add everything to panel
         control_panel.setLayout(new FlowLayout());
-        control_panel.add(new JLabel("Select Size"));
         control_panel.add(size);
         control_panel.add(size_slider, BorderLayout.SOUTH);
         control_panel.add(generator);

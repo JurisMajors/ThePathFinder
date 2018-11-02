@@ -9,6 +9,8 @@ public class World extends JPanel {
     int size;
     private final int[] di = { -1,  0, 0,  1 , };
     private final int[] dj = { 0, -1, 1,  0, };
+//    private final int[] di = { -1,  0, 0,  1 , -1, 1, -1, 1};
+//    private final int[] dj = { 0, -1, 1,  0, -1, 1, 1, -1};
     private MazeGenerator generator;
     World(int n) {
         reset(n);
@@ -168,13 +170,14 @@ public class World extends JPanel {
         generator.run();
     }
 
-
+    int allowedDirections(){
+        return di.length;
+    }
 
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-//        System.out.println("Printing world");
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         for (int i = 0; i < this.size; i++) {
